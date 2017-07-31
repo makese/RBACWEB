@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<constant name="struts.multipart.maxSize" value="10097152" />
+	<package name="interceptor" extends="struts-default">
+            <interceptors>
+                <!-- 声明拦截器 -->
+                <interceptor name="checkPrivilege" class="cn.makese.rbac.service.CheckPrivilegeInterceptor"></interceptor>
+
+                <!-- 定义自己的拦截器栈 -->
+                <interceptor-stack name="myInterceptorStack">
+                    <interceptor-ref name="checkPrivilege"></interceptor-ref>
+                    <interceptor-ref name="defaultStack"></interceptor-ref>
+                </interceptor-stack>
+            </interceptors>
+                <default-interceptor-ref name="myInterceptorStack"/>
+                <default-action-ref name="pagenotfound"></default-action-ref> 
+                 <!-- <default-interceptor-ref name="defaultStack"/>  -->
+
+        <!-- 全局的Result配置 -->
+        <global-results>
+            <result name="loginUI">/index.jsp</result>
+            <result name="noPrivilegeError">/WEB-INF/RBAC/</result>
+        </global-results>
+ 
+   			<action name="pagenotfound">  
+              <result>/resourceNotFound.html</result>  
+   			</action>
+    </package>
+	<package name="users" namespace="/users" extends="interceptor">
+
+		<action name="index" class="userAction" method="logIn">
+			<result>
+				/WEB-INF/RBAC/users/index_login.jsp
+			</result>
+			<result name="error">
+				/index.jsp
+			</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+
+		<action name="*_*" class="{1}Action" method="{2}">
+			<result>
+				/WEB-INF/RBAC/users/{1}_{2}_success.jsp
+			</result>
+			<result name="error">
+				/WEB-INF/RBAC/users/{1}_{2}_error.jsp
+			</result>
+		</action>
+
+	</package>
+
+	<package name="roles" namespace="/roles" extends="interceptor">
+
+		<action name="*_*" class="{1}Action" method="{2}">
+			<result>
+				/WEB-INF/RBAC/roles/{1}_{2}_success.jsp
+			</result>
+			<result name="error">
+				/WEB-INF/RBAC/roles/{1}_{2}_error.jsp
+			</result>
+		</action>
+
+	</package>
+
+	<package name="modules" namespace="/modules" extends="interceptor">
+
+		<action name="*_*" class="{1}Action" method="{2}">
+			<result>
+				/WEB-INF/RBAC/modules/{1}_{2}_success.jsp
+			</result>
+			<result name="error">
+				/WEB-INF/RBAC/modules/{1}_{2}_error.jsp
+			</result>
+		</action>
+
+	</package>
+	
+		<package name="uploads" namespace="/uploads" extends="interceptor">
+
+		<action name="*_*" class="{1}Action" method="{2}">
+			<result>
+				/WEB-INF/RBAC/uploads/{1}_{2}_success.jsp
+			</result>
+			<result name="error">
+				/WEB-INF/RBAC/uploads/{1}_{2}_error.jsp
+			</result>
+		</action>
+
+	</package>
+</struts>
