@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--配置spring使用annotation  -->
+	<context:annotation-config />
+	<!--配置自动扫描目标路径  -->
+	<context:component-scan base-package="cn.makese.rbac" />
+	
+	<!--配置数据库连接池  -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<!--这个设置可以在hibernate中处理中文  -->
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/RBAC?characterEncoding=utf8"/>
+		<property name="username" value="root" />
+		<property name="password" value="j8803299110" />
+	</bean>
+    <!--配置SessionFactory,我们需要把数据库连接池注入给SessionFaction  -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<!--把数据库连接池注入给SessionFactory,中的dataSource变量  -->
+		<property name="dataSource" ref="dataSource" />
+		<!--告诉spring那些类用了被hibernatge用annotation的方式管理了起来方式1  自己写所有的model-->
+		<!-- <property name="annotatedClasses">
+			给list注入值用list标签   
+			<list>
+				<value>com.dqpi.spring.model.User</value>
+			</list>
+		</property> -->
+		<!--告诉spring那些类用了被hibernatge用annotation的方式管理了起来方式2 自动扫描一个文件夹 
+				建议使用这种方式，每次增加一个model只要在这个文件夹下增加一个类即可
+		-->
+		<property name="packagesToScan">
+		<list>
+				<value>cn.makese.rbac.model</value>
+			</list>
+		</property>
+		<!--配置hibernate的属性  -->
+		<property name="hibernateProperties">
+			<value>
+				hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+				hibernate.hbm2ddl.auto=update
+				hibernate.show_sql=true
+				hibernate.format_sql=true
+			</value>
+		</property>
+	</bean>
+	
+	
+
+
+  <!-- 配置事务管理器,我们要把sessionFactory注入进来 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <!-- 配置annotation事务管理 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+  
+</beans>

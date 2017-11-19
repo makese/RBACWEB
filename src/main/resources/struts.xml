@@ -35,7 +35,7 @@
 
 		<action name="index" class="userAction" method="logIn">
 			<result>
-				/WEB-INF/RBAC/users/index_login.jsp
+				/WEB-INF/RBAC/user/index_login.jsp
 			</result>
 			<result name="error">
 				/index.jsp
@@ -45,10 +45,10 @@
 
 		<action name="*_*" class="{1}Action" method="{2}">
 			<result>
-				/WEB-INF/RBAC/users/{1}_{2}_success.jsp
+				/WEB-INF/RBAC/user/{1}_{2}_success.jsp
 			</result>
 			<result name="error">
-				/WEB-INF/RBAC/users/{1}_{2}_error.jsp
+				/WEB-INF/RBAC/user/{1}_{2}_error.jsp
 			</result>
 		</action>
 
@@ -58,10 +58,10 @@
 
 		<action name="*_*" class="{1}Action" method="{2}">
 			<result>
-				/WEB-INF/RBAC/roles/{1}_{2}_success.jsp
+				/WEB-INF/RBAC/role/{1}_{2}_success.jsp
 			</result>
 			<result name="error">
-				/WEB-INF/RBAC/roles/{1}_{2}_error.jsp
+				/WEB-INF/RBAC/role/{1}_{2}_error.jsp
 			</result>
 		</action>
 
@@ -71,10 +71,10 @@
 
 		<action name="*_*" class="{1}Action" method="{2}">
 			<result>
-				/WEB-INF/RBAC/modules/{1}_{2}_success.jsp
+				/WEB-INF/RBAC/module/{1}_{2}_success.jsp
 			</result>
 			<result name="error">
-				/WEB-INF/RBAC/modules/{1}_{2}_error.jsp
+				/WEB-INF/RBAC/module/{1}_{2}_error.jsp
 			</result>
 		</action>
 
@@ -84,10 +84,10 @@
 
 		<action name="*_*" class="{1}Action" method="{2}">
 			<result>
-				/WEB-INF/RBAC/uploads/{1}_{2}_success.jsp
+				/WEB-INF/RBAC/upload/{1}_{2}_success.jsp
 			</result>
 			<result name="error">
-				/WEB-INF/RBAC/uploads/{1}_{2}_error.jsp
+				/WEB-INF/RBAC/upload/{1}_{2}_error.jsp
 			</result>
 		</action>
 
